@@ -5,6 +5,8 @@
  */
 package net.stn.streams.parallel;
 
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 import java.util.function.Function;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -16,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class StreamParallelExecrise {
+public class StreamParallelExercise {
 
 	public static void main(String[] args) {
 		// infiniteStream(1_000);
@@ -30,6 +32,8 @@ public class StreamParallelExecrise {
 		log.debug("timeTaken#3:{} ms", timeTaken);
 		timeTaken = measureSumPerf(ParallelStream::parallelRangedSum, 10_000_000);
 		log.debug("timeTaken#4:{} ms", timeTaken);
+		measureSumPerf(StreamParallelExercise::forkJoinSum, 10_000_000);
+		log.debug("timeTaken#5:{} ms", timeTaken);
 
 	}
 
@@ -52,6 +56,12 @@ public class StreamParallelExecrise {
 				fastest = duration;
 		}
 		return fastest;
+	}
+
+	public static long forkJoinSum(long n) {
+		long[] numbers = LongStream.rangeClosed(1, n).toArray();
+		ForkJoinTask<Long> task = new ForkJoinSumCalculator(numbers);
+		return new ForkJoinPool().invoke(task);
 	}
 
 	static class ParallelStream {
