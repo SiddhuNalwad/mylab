@@ -6,7 +6,6 @@
 package net.stn;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +57,7 @@ public class TestLab {
 		BigDecimal b = BigDecimal.valueOf(123.45243f);
 
 		System.out.println("value=" + b);
+
 	}
 
 	private static void listReductionTest() {
@@ -77,8 +77,7 @@ public class TestLab {
 		return new BigDecimal(fd);
 	}
 
-	public static <T> Predicate<T> distinctByKey(
-			Function<? super T, ?> keyExtractor) {
+	public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
 	}
