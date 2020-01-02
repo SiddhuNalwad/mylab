@@ -90,7 +90,10 @@ public class Dish {
 	 */
 	@Override
 	public String toString() {
-		return name;
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n").append("Name:").append(this.getName()).append("\n").append("Type:").append(this.getType())
+				.append("\n").append("Calories:").append(this.getCalories());
+		return sb.toString();
 	}
 
 	/**

@@ -54,7 +54,8 @@ public class TestStreams {
 		List<Integer> set1 = Arrays.asList(1, 2, 3, 9);
 		List<Integer> set2 = Arrays.asList(4, 5, 6);
 
-		List<int[]> set = set1.stream().flatMap(i -> set2.stream().map(j -> new int[] { i, j })).collect(Collectors.toList());
+		List<int[]> set = set1.stream().flatMap(i -> set2.stream().map(j -> new int[] { i, j }))
+				.collect(Collectors.toList());
 		log.debug("set={}", set);
 		set.stream().forEach(a -> {
 			String combination = "(";
@@ -69,7 +70,8 @@ public class TestStreams {
 
 	private static void Using_new_Example3() {
 		Map<String, FourArgumentFunction<String, Boolean, Integer, Dish.Type, Dish>> dishes = new HashMap<>();
-		dishes.put("veg", Dish::new);
+		FourArgumentFunction<String, Boolean, Integer, Dish.Type, Dish> interfaceDish = dishes.put("veg", Dish::new);
+		log.debug("interfaceDish:{}", interfaceDish);
 
 		Dish dish = dishes.get("veg").apply("BisiBelleBath", true, 800, Dish.Type.OTHER);
 		log.debug("new dish:{}", dish);

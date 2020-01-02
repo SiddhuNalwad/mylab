@@ -27,16 +27,11 @@ public class DishExercise {
 
 	public static void main(String[] args) {
 
-		List<Dish> menu = Arrays.asList(
-				new Dish("pork", false, 800, Dish.Type.MEAT),
-				new Dish("beef", false, 700, Dish.Type.MEAT),
-				new Dish("chicken", false, 400, Dish.Type.MEAT),
-				new Dish("french fries", true, 530, Dish.Type.OTHER),
-				new Dish("rice", true, 350, Dish.Type.OTHER),
-				new Dish("season fruit", true, 120, Dish.Type.OTHER),
-				new Dish("pizza", true, 550, Dish.Type.OTHER),
-				new Dish("prawns", false, 300, Dish.Type.FISH),
-				new Dish("salmon", false, 450, Dish.Type.FISH));
+		List<Dish> menu = Arrays.asList(new Dish("pork", false, 800, Dish.Type.MEAT),
+				new Dish("beef", false, 700, Dish.Type.MEAT), new Dish("chicken", false, 400, Dish.Type.MEAT),
+				new Dish("french fries", true, 530, Dish.Type.OTHER), new Dish("rice", true, 350, Dish.Type.OTHER),
+				new Dish("season fruit", true, 120, Dish.Type.OTHER), new Dish("pizza", true, 550, Dish.Type.OTHER),
+				new Dish("prawns", false, 300, Dish.Type.FISH), new Dish("salmon", false, 450, Dish.Type.FISH));
 
 		// 1. Find total number of dishes in the menu
 		long totalDishes = menu.stream().collect(Collectors.counting());
@@ -59,7 +54,8 @@ public class DishExercise {
 		log.debug("summary:{}", summary);
 
 		// 5. joining
-		// menu.stream().collect(Collectors.joining()); //not working - code from Java 8 in action
+		// menu.stream().collect(Collectors.joining()); //not working - code
+		// from Java 8 in action
 		String shortMenu = menu.stream().map(Dish::getName).collect(Collectors.joining(","));
 		log.debug("shortMenu:{}", shortMenu);
 
@@ -68,16 +64,38 @@ public class DishExercise {
 		log.debug("dishTypes:{}", dishesByType);
 
 		// 7. Group dishes by DIET, NORMAL or FAT
-		Map<CaloricLevel, List<Dish>> dishesByCaloricLevel = menu.stream().collect(
-				Collectors.groupingBy(dish -> {
-					if (dish.getCalories() <= 400)
-						return CaloricLevel.DIET;
-					else if (dish.getCalories() <= 700)
-						return CaloricLevel.NORMAL;
-					else
-						return CaloricLevel.FAT;
-				}));
+		Map<CaloricLevel, List<Dish>> dishesByCaloricLevel = menu.stream().collect(Collectors.groupingBy(dish -> {
+			if (dish.getCalories() <= 400)
+				return CaloricLevel.DIET;
+			else if (dish.getCalories() <= 700)
+				return CaloricLevel.NORMAL;
+			else
+				return CaloricLevel.FAT;
+		}));
 
 		log.debug("dishesByCaloricLevel:{}", dishesByCaloricLevel);
+
+		// 8. Get total calories of menu
+		// IST METHOD
+		final int totalCaloriesOfMenu1 = menu.stream().collect(Collectors.summingInt(Dish::getCalories));
+		log.debug("totalCaloriesOfMenu:{} calories", totalCaloriesOfMenu1);
+
+		// IIND METHOD
+		final int totalCaloriesOfMenu2 = menu.stream().mapToInt(Dish::getCalories).sum();
+		log.debug("totalCaloriesOfMenu:{} calories", totalCaloriesOfMenu2);
+
+		// 9. Whether all dishes in the menu are high calories (greater than 300
+		// calories)
+		boolean highCalorieMenuFlag = menu.stream().allMatch(d -> d.getCalories() > 300);
+		if (highCalorieMenuFlag) {
+			log.debug("It is HIGH calorie menu.");
+		} else {
+			log.debug("It is LOW calorie menu.");
+		}
+
+		// 10. Get all low calorie dishes from the menu (calorie <= 300)
+		final List<Dish> lowCalorieDishes = menu.stream().filter(d -> d.getCalories() <= 300)
+				.collect(Collectors.toList());
+		lowCalorieDishes.stream().forEach(d -> log.debug("LOW calorie dish:{}", d));
 	}
 }
