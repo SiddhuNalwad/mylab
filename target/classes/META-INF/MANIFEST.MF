@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Built-By: SiddhuNalwad
 Build-Jdk: 13.0.1
 Implementation-Title: java-lab
-Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Version: 1.0.0
 Implementation-Vendor-Id: net.stn
 Implementation-Vendor: Pivotal Software, Inc.
 Implementation-URL: http://projects.spring.io/spring-boot/myLab/
