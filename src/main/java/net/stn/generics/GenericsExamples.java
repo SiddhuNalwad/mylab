@@ -1,5 +1,6 @@
 package net.stn.generics;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,12 +32,36 @@ public class GenericsExamples {
 
 		// the below statement works
 		processListString(listString1);
-		// the below statement works in JDK8 while it fails in JDK7
+		// the below statement works in JDK8 while it fails in JDK7 as type
+		// inference scope has been increased to include method arguments and
+		// returns.
 		processListString(Collections.emptyList());
+
+		// example 4: Upper bounded wildcards
+		log.debug("Sum#1:{}", getSum(Arrays.asList(1, 2, 3, 4, 5, 6)));
+		log.debug("Sum#2:{}", getSum(Arrays.asList(1.2, 2.3, 4.5)));
+
+		// example 5: Unbounded wildcards
+		printList(Arrays.asList(1, 2, 3));
+
+		// example 6: Lower bounded wildcards
+		addNumbers(Arrays.asList(1, 2, 3));
+		addNumbers(Arrays.asList(1.2, 2.2, 3.3));
+
 	}
 
 	public static void processListString(List<String> ls) {
 		log.debug("inside processListString");
+	}
+
+	public static <T> double getSum(List<? extends Number> list) {
+		// List is the JDK is defined as follows...
+		// public interface List<E>{
+		double sum = 0.0;
+		for (Number number : list) {
+			sum += number.doubleValue();
+		}
+		return sum;
 	}
 
 	/**
@@ -67,6 +92,26 @@ public class GenericsExamples {
 
 		T getContent() {
 			return content;
+		}
+	}
+
+	/**
+	 * Unbounded wildcard method
+	 * 
+	 * @param list
+	 */
+	public static void printList(List<?> list) {
+		list.stream().forEach(System.out::println);
+	}
+
+	/**
+	 * Lower bounded wildcard method
+	 * 
+	 * @param list
+	 */
+	public static void addNumbers(List<? super Integer> list) {
+		for (int i = 0; i <= 10; ++i) {
+			list.add(i);
 		}
 	}
 }
