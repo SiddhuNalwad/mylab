@@ -1,10 +1,13 @@
-package net.stn;
+package net.stn.puzzles;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FunctionalPuzzle {
 
 	public static void main(String[] args) {
@@ -14,12 +17,21 @@ public class FunctionalPuzzle {
 		// subsets of {1, 4, 9} are {1, 4 ,9}, {1, 4}, {1, 9}, {4, 9}, {1}, {4},
 		// {9}, and {}.
 
-		List<Integer> numberList = Arrays.asList(1, 4, 9);
+		List<Integer> numberList = Arrays.asList(1, 2, 3, 4, 5);
 
 		FunctionalPuzzle puzzle = new FunctionalPuzzle();
 		List<List<Integer>> result = puzzle.subsets(numberList);
 
+		log.debug("count:{}", result.stream().count());
+
 		result.stream().forEach(System.out::println);
+
+		log.debug("================================");
+		for (List<Integer> list : result) {
+			if (list.size() == 4) {
+				log.debug("{}", list);
+			}
+		}
 	}
 
 	List<List<Integer>> subsets(List<Integer> list) {
